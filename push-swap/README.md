@@ -232,20 +232,61 @@ Chaque dossier a une seule responsabilité :
 - **`piles`** : les deux piles et les onze instructions. Les deux programmes l'utilisent, donc les instructions ne sont écrites qu'une fois. Ce dossier enregistre aussi chaque instruction exécutée.
 - **`arguments`** : transforme le texte tapé en nombres (`LireNombres`) et refuse les doublons (`VerifierDoublons`).
 - **`tri`** : les algorithmes qui décident quelles instructions utiliser. Seul `push-swap` s'en sert.
+
 ## Tests
  
-Pour lancer tous les tests :
+Les commandes se tapent à la racine du projet, c'est-à-dire dans le dossier `push-swap/` qui contient le fichier `go.mod`.
  
-```
+Tous les tests :
+ 
+```bash
 go test ./...
 ```
  
-Ils vérifient notamment :
+Avec le détail de chaque test (plus bavard) :
+ 
+```bash
+go test -v ./...
+```
+ 
+Un seul dossier :
+ 
+```bash
+go test ./piles
+go test ./arguments
+go test ./tri
+```
+ 
+Un seul test, par son nom :
+ 
+```bash
+go test ./tri -run NomDuTest
+```
+ 
+Si on relance les tests sans avoir rien modifié, Go affiche `(cached)` et réutilise le résultat précédent. Pour forcer leur exécution :
+ 
+```bash
+go test -count=1 ./...
+```
+ 
+Un résultat réussi ressemble à ceci :
+ 
+```text
+ok      push-swap/piles       0.003s
+ok      push-swap/arguments   0.002s
+ok      push-swap/tri         0.150s
+?       push-swap/cmd/checker [no test files]
+```
+ 
+Les lignes `[no test files]` sont normales : les dossiers `cmd` n'ont pas de tests.
+ 
+Les tests vérifient notamment :
  
 - l'exemple du sujet, instruction par instruction ;
 - les instructions sur des piles vides ou trop petites ;
 - les erreurs (non-entiers, doublons, instructions inconnues) ;
 - que les instructions générées trient bien des centaines de piles aléatoires, de 2 à 500 nombres, y compris avec des nombres négatifs.
+
 ## Performances
  
 Nombre moyen d'instructions mesuré sur des listes aléatoires (moyenne de 10 essais) :
